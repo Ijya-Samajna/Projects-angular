@@ -1,0 +1,62 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+
+<div fxLayoutAlign="center center">
+
+<mat-card class="outline">
+  <mat-card-header>
+    <mat-card-title style="padding-left: 28px;">Login Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+
+    <form fxLayout="column" [formGroup]="contactForm" name="contactForm">
+      
+      <div> 
+        <mat-form-field fxFlex="calc(8em + 10px)">
+          <input matInput type="text" placeholder="Username" formControlName="username" required>
+          <span matSuffix><mat-icon>person</mat-icon></span>          
+          <mat-error *ngIf="!contactForm.get('username').valid"> {{getUserErrorMessage()}}</mat-error>          
+        </mat-form-field> 
+      </div>      
+      
+      <div>  
+        <mat-form-field fxFlex="calc(8em + 10px)">
+          <input matInput  type="email"  placeholder="Email" formControlName="email" required>   
+          <mat-error *ngIf="!contactForm.get('email').valid"> {{getEmailErrorMessage()}}</mat-error> 
+        </mat-form-field>  
+      </div>  
+      
+      <div>  
+        <mat-form-field fxFlex="calc(8em + 10px)">
+          <input matInput  [type]="hide ? 'password' : 'text'"  placeholder="Password" formControlName="pword" required>          
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>           
+          <mat-error *ngIf="!contactForm.get('pword').valid"> {{getPwordErrorMessage()}}</mat-error>    
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field fxFlex="calc(8em + 10px)">
+          <input matInput  [type]="hiide ? 'password' : 'text'"  placeholder="Confirm Password" formControlName="pwordchk" required>
+          <mat-icon matSuffix (click)="hiide = !hiide">{{hiide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <mat-error *ngIf="!contactForm.get('pwordchk').valid"> {{getPwordchkErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field fxFlex="calc(8em + 10px)">
+          <input matInput [matDatepicker]="picker" placeholder="mm dd yyyy" formControlName="date" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="!contactForm.get('date').valid"> {{getDateErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <button mat-raised-button color="accent" type="submit" (click)="onSubmit(contactForm)" [disabled]="contactForm.invalid">Submit</button>
+      </div>
+
+    </form>
+    
+  </mat-card-content>  
+</mat-card  >
+</div>
