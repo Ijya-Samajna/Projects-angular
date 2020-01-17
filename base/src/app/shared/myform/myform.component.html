@@ -1,4 +1,4 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <div fxLayoutAlign="center center">
 
@@ -28,10 +28,13 @@
       
       <div>  
         <mat-form-field fxFlex="calc(8em + 10px)">
-          <input matInput  [type]="hide ? 'password' : 'text'"  placeholder="Password" formControlName="pword" required>          
+          <input matInput  [type]="hide ? 'password' : 'text'"  placeholder="Password" formControlName="pword" required id="pwd">          
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>           
-          <mat-error *ngIf="!contactForm.get('pword').valid"> {{getPwordErrorMessage()}}</mat-error>    
-        </mat-form-field>
+          <mat-error *ngIf="!contactForm.get('pword').valid"> {{getPwordErrorMessage()}}</mat-error>               
+        </mat-form-field>        
+      </div>
+      <div id="progressBar" *ngIf="!contactForm.get('pword').hasError('required')">
+        <div id="progress-bar"></div>
       </div>
 
       <div>
@@ -60,3 +63,41 @@
   </mat-card-content>  
 </mat-card  >
 </div>
+
+
+<script>
+
+jQuery.strength = function( element, password ) {
+        var wide = [{'width':'0%'}, {'width':'20%'}, {'width':'40%'}, {'width':'60%'}, {'width':'80%'}, {'width':'100%'}];
+        var currentClass = ['', 'progress-bar-danger', 'progress-bar-danger', 'progress-bar-warning', 'progress-bar-success', 'progress-bar-success'];
+        var score = 0;
+
+        if(password.length > 6){
+            score++;
+        }
+
+        if ((password.match(/[a-z]/)) && (password.match(/[A-Z]/))){
+            score++;
+        }
+
+        if(password.match(/\d+/)){
+            score++;
+        }
+
+        if(password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/)){
+            score++;
+        }
+
+        if (password.length > 10){
+            score++;
+        }
+
+        element.removeClass( currentClass[score-1] ).addClass( currentClass[score] ).css( wide[score] );
+    };
+
+jQuery(function() {
+  jQuery("#pwd").keyup(function() {
+    jQuery.strength(jQuery("#progress-bar"), jQuery(this).val());
+    });
+});
+</script>
