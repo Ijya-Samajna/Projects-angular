@@ -12,6 +12,9 @@ export class MyformComponent implements OnInit {
   hide = true;
   hiide = true;
   contactForm: FormGroup;
+  score: number= 0;
+  meterValue = 0;
+  passwordStatus = " ";
   
   constructor(public fb: FormBuilder) {
     this.contactForm = fb.group({
@@ -21,6 +24,29 @@ export class MyformComponent implements OnInit {
       pwordchk: ['', [Validators.required, passwordmatching]],
       date: ['', [Validators.required]]
     })
+
+    this.contactForm.controls.pword.valueChanges.subscribe((response) => {
+      if (response.match('(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}')) {
+        this.meterValue = 100;
+        this.passwordStatus = 'strong';
+      }
+
+      else if (response.match('.{6,}')) {        
+        this.meterValue = 50;
+        this.passwordStatus = 'moderate';
+      }
+
+      else if (response.match('.{3,}')) {
+        this.meterValue = 20;
+        this.passwordStatus = 'weak';
+      }
+
+      else {
+        this.meterValue = 0;
+        this.passwordStatus = 'weak';
+      }
+    }
+    );
 
   }
   ngOnInit() {
@@ -62,10 +88,40 @@ getDateErrorMessage() {
          '';
 }
 
-
 onSubmit(form) {
   console.log(form.value);
 }
-
-
 }
+
+
+
+
+
+/*strength(password, element){
+
+  var wide = [{'width':'0%'}, {'width':'20%'}, {'width':'40%'}, {'width':'60%'}, {'width':'80%'}, {'width':'100%'}];
+  var currentClass = ['', 'progress-bar-danger', 'progress-bar-danger', 'progress-bar-warning', 'progress-bar-success', 'progress-bar-success'];
+  
+
+  if(password.length > 6){
+    this.score++;
+}
+
+if ((password.match(/[a-z]/)) && (password.match(/[A-Z]/))){
+    this.score++;
+}
+
+if(password.match(/\d+/)){
+    this.score++;
+}
+
+if(password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/)){
+    this.score++;
+}
+
+if (password.length > 10){
+    this.score++;
+}
+
+element.removeClass( currentClass[score-1] ).addClass( currentClass[score] ).css( wide[score] );
+}*/
