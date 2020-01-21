@@ -32,7 +32,7 @@
         </mat-form-field> 
       </div>
 
-      <div [ngSwitch] = "passwordStatus">
+      <div [ngSwitch] = "passwordStatus" style="margin-top: 12px;;" *ngIf="!contactForm.get('pword').hasError('required')">
         <div *ngSwitchCase = "'weak'" class="progress-bar-danger"> weak </div>
         <div *ngSwitchCase = "'moderate'" class="progress-bar-warning"> moderate</div>
         <div *ngSwitchCase = "'strong'" class="progress-bar-success"> strong </div>
